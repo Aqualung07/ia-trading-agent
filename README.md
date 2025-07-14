@@ -52,7 +52,7 @@ Edit `config.yaml` to customize your watchlist. Currently supports:
 
 ## 📱 Notifications
 
-The system sends alerts via Telegram when:
+The system sends alerts via Telegram. It gives the following information:
 
 -   RSI reaches oversold/overbought levels
 -   MACD shows significant crossovers
