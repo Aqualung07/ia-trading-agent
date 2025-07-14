@@ -1,0 +1,37 @@
+watchlist:
+    # Global Diversification
+    - IWDA.AS # iShares Core MSCI World (acumulación)
+    - SWDA.L # iShares MSCI World UCITS ETF (similar a IWDA, más volumen en Londres)
+    - VWCE.DE # Vanguard FTSE All-World UCITS ETF (global, acumulación)
+
+    # USA exposure
+    - CSPX.L # iShares Core S&P 500
+    - VTI # Vanguard Total Stock Market
+    - QQQ # Nasdaq 100 (más tech)
+
+    # Europa y emergentes
+    - EUNL.DE # iShares Core MSCI EMU (zona euro)
+    - IEMG # iShares Core MSCI Emerging Markets ETF
+
+    # Bonos (riesgo muy bajo)
+    - BND # Vanguard Total Bond Market ETF
+    - AGGH.AS # iShares Core Global Aggregate Bond UCITS ETF
+
+    # REITs (opcional)
+    - VNQ # Vanguard Real Estate ETF
+
+    # Biotech seguimiento (mantén Gubra si quieres)
+    - GUBRA.CO
+
+    # ETFs BTC
+    - BITO
+    - IBIT
+
+    # ETFs ORO
+    - GLD
+    - IAU
+
+alerts:
+    rsi_threshold: 30
+    macd_signal: true
+    daily_check: true
