@@ -17,10 +17,10 @@ def main(return_results=False, send_report=True):
     symbols = config.get("watchlist", [])
     
     results = []
-    watchlist_activa = []
+    active_watchlist = []  # Changed from watchlist_activa
 
     for symbol in symbols:
-        print(f"\n📊 Analizando {symbol}...")
+        print(f"\n📊 Analyzing {symbol}...")  # Changed from Analizando
         df = fetch_price_data(symbol)
         signal = analyze_rsi_macd(df, symbol)
 
@@ -39,15 +39,15 @@ def main(return_results=False, send_report=True):
             "recommendation": recommendation
         })
 
-        if "Observar de cerca" in recommendation:
-            watchlist_activa.append(symbol)
+        if "Watch closely" in recommendation:  # Changed from "Observar de cerca"
+            active_watchlist.append(symbol)
 
     if send_report:
         markdown = get_llm_analysis(results)
         send_telegram_message(markdown)
 
     if return_results:
-        return results, watchlist_activa
+        return results, active_watchlist
 
 if __name__ == "__main__":
     main()

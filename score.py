@@ -1,6 +1,6 @@
 def parse_float(val):
     """
-    Convierte un valor a float si es posible, si no devuelve None.
+    Converts a value to float if possible, otherwise returns None.
     """
     if val is None:
         return None
@@ -15,12 +15,12 @@ def parse_float(val):
 
 def calculate_score(fundamentals: dict, tech: str) -> int:
     """
-    Calcula un score técnico-fundamental simple basado en reglas heurísticas.
-    Rango sugerido: de -3 (muy negativo) a +3 (muy positivo)
+    Calculates a simple technical-fundamental score based on heuristic rules.
+    Suggested range: from -3 (very negative) to +3 (very positive)
     """
     score = 0
 
-    # Fundamentos
+    # Fundamentals
     pe = parse_float(fundamentals.get("pe"))
     if pe is not None:
         if pe > 0 and pe < 20:
@@ -47,7 +47,7 @@ def calculate_score(fundamentals: dict, tech: str) -> int:
     if debt is not None and debt > 100:
         score -= 1
 
-    # Técnica
+    # Technical
     if "RSI=" in tech:
         try:
             rsi_val = float(tech.split("RSI=")[1].split(",")[0])

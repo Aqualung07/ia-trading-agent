@@ -8,11 +8,11 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 def list_available_models():
     try:
         models = client.models.list()
-        print("📦 Modelos disponibles con tu API key:")
+        print("📦 Available models with your API key:")
         for model in models.data:
             print("-", model.id)
     except Exception as e:
-        print("⚠️ Error al listar modelos:", e)
+        print("⚠️ Error listing models:", e)
 
 if __name__ == "__main__":
     list_available_models()

@@ -13,13 +13,13 @@ print("Chat ID:", CHAT_ID)
 
 def send_telegram_message(message):
     """
-    Envía un mensaje por Telegram. Si supera los 4096 caracteres, lo divide en partes.
+    Sends a Telegram message. If it exceeds 4096 characters, splits it into parts.
     """
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     if not TELEGRAM_TOKEN or not CHAT_ID:
-        print(f"[{timestamp}] ❌ Token o Chat ID no definidos.")
+        print(f"[{timestamp}] ❌ Token or Chat ID not defined.")
         return
 
     max_length = 4000
@@ -29,14 +29,14 @@ def send_telegram_message(message):
         data = {
             "chat_id": CHAT_ID,
             "text": part,
-            # "parse_mode": "Markdown"
+            "parse_mode": "Markdown"
         }
         try:
             response = requests.post(url, data=data)
             if response.status_code == 200:
-                print(f"[{timestamp}] ✅ Parte {i+1}/{len(messages)} enviada por Telegram.")
+                print(f"[{timestamp}] ✅ Part {i+1}/{len(messages)} sent via Telegram.")
             else:
-                print(f"[{timestamp}] ❌ Error al enviar parte {i+1}. Código {response.status_code}")
-                print("Respuesta:", response.text)
+                print(f"[{timestamp}] ❌ Error sending part {i+1}. Code {response.status_code}")
+                print("Response:", response.text)
         except Exception as e:
-            print(f"[{timestamp}] ⚠️ Excepción al enviar parte {i+1} por Telegram: {e}")
+            print(f"[{timestamp}] ⚠️ Exception sending part {i+1} via Telegram: {e}")

@@ -6,7 +6,7 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def get_preferred_model():
-    """Devuelve el mejor modelo disponible."""
+    """Returns the best available model."""
     try:
         available_models = [m.id for m in client.models.list().data]
         for candidate in ["gpt-4o", "gpt-4", "gpt-3.5-turbo"]:
@@ -14,56 +14,56 @@ def get_preferred_model():
                 return candidate
         return None
     except Exception as e:
-        print("⚠️ No se pudieron listar los modelos:", e)
+        print("⚠️ Could not list models:", e)
         return None
 
 def build_analysis_prompt(symbol, tech_signal, fundamentals, score=None):
-    """Construye un prompt estructurado para análisis breve por activo."""
+    """Builds a structured prompt for brief asset analysis."""
     return f"""
-Actúa como un asesor financiero experto.
+Act as a financial expert advisor.
 
-Analiza el activo {symbol} en base a los siguientes datos estructurados.
+Analyze the asset {symbol} based on the following structured data.
 
-🔍 Señales técnicas:
+🔍 Technical signals:
 {tech_signal}
 
-📊 Datos fundamentales:
+📊 Fundamental data:
 - P/E: {fundamentals.get('pe', 'N/A')}
 - EPS: {fundamentals.get('eps', 'N/A')}
-- Crecimiento de ingresos: {fundamentals.get('revenue_growth', 'N/A')}
-- Margen de beneficio: {fundamentals.get('profit_margin', 'N/A')}
-- Deuda/Capital: {fundamentals.get('debt_to_equity', 'N/A')}
+- Revenue Growth: {fundamentals.get('revenue_growth', 'N/A')}
+- Profit Margin: {fundamentals.get('profit_margin', 'N/A')}
+- Debt/Equity: {fundamentals.get('debt_to_equity', 'N/A')}
 
-📐 Score técnico-fundamental combinado: {score if score is not None else 'N/A'} (rango -3 a +3)
+📐 Combined technical-fundamental score: {score if score is not None else 'N/A'} (range -3 to +3)
 
-🎯 Tu tarea es:
-1. Dar una única recomendación: Acumular / Mantener / Observar / Reducir / Vender
-2. Resumir en 2 frases la justificación basada en los datos proporcionados
+🎯 Your task is:
+1. Give a single recommendation: Accumulate / Hold / Watch / Reduce / Sell
+2. Summarize in 2 sentences the justification based on provided data
 
-⚠️ No inventes información externa ni contexto adicional. Basa tu análisis únicamente en los datos anteriores.
+⚠️ Don't make up external information or additional context. Base your analysis only on the data above.
 """
 
 def get_llm_analysis(results):
-    """Genera un informe corto por activo con recomendación y justificación concisa."""
-    markdown = "# 📋 Recomendaciones resumidas por activo\n\n"
+    """Generates a short report per asset with recommendation and concise justification."""
+    markdown = "# 📋 Recommendations summarized by asset\n\n"
     model = get_preferred_model()
 
     if not model:
-        return "❌ No tienes acceso a ningún modelo de lenguaje válido."
+        return "❌ You do not have access to any valid language model."
 
     for item in results:
         prompt = build_analysis_prompt(
             symbol=item['symbol'],
             tech_signal=item['tech'],
             fundamentals=item['fundamentals'],
-            score=item.get('score')  # opcional
+            score=item.get('score')  # optional
         )
 
         try:
             response = client.chat.completions.create(
                 model=model,
                 messages=[
-                    {"role": "system", "content": "Eres un asesor financiero experto. Usa iconos para generar una estructura clara y fácil de leer."},
+                    {"role": "system", "content": "You are a financial expert advisor. Use icons to generate a clear and easy-to-read structure."},
                     {"role": "user", "content": prompt}
                 ],
                 temperature=0.3
@@ -71,6 +71,6 @@ def get_llm_analysis(results):
             answer = response.choices[0].message.content.strip()
             markdown += f"## {item['symbol']}\n{answer}\n\n"
         except Exception as e:
-            markdown += f"## {item['symbol']}\n⚠️ Error al analizar con LLM: {e}\n\n"
+            markdown += f"## {item['symbol']}\n⚠️ Error analyzing with LLM: {e}\n\n"
 
     return markdown
