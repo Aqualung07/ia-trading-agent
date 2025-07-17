@@ -51,7 +51,8 @@ def generate_recommendation(fundamentals, tech_signal, score=None):
             action = "🔴 Reduce or Sell"  # Changed from Reducir o Vender
     else:
         # Fallback if no score
-        if "No fundamental data" in fundamentals:  # Changed from Sin datos fundamentales
+        # If we did not retrieve any fundamental metrics
+        if not fundamentals:
             if tech_signal and ("RSI=" in tech_signal or "MACD" in tech_signal):
                 return "🟡 Watch closely (interesting technicals, no fundamentals)"
             return "🔍 Watch (insufficient fundamental data)"
